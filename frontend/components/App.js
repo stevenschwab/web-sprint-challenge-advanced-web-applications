@@ -44,6 +44,8 @@ export default function App() {
         '/api/login',
         { username, password }
       )
+      localStorage.setItem('token', data.token)
+      
     } catch (error) {
       console.log(error)
     }
