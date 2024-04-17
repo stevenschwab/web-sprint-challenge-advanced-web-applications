@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import Articles from './Articles'
 import LoginForm from './LoginForm'
 import Message from './Message'
@@ -29,13 +30,23 @@ export default function App() {
     // using the helper above.
   }
 
-  const login = ({ username, password }) => {
+  const login = async ({ username, password }) => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch a request to the proper endpoint.
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
+    setMessage('')
+    setSpinnerOn(true)
+    try {
+      const { data } = await axios.post(
+        '/api/login',
+        { username, password }
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getArticles = () => {
@@ -78,7 +89,7 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
               <ArticleForm />
