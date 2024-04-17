@@ -46,6 +46,7 @@ export default function App() {
       )
       localStorage.setItem('token', data.token)
       setMessage(data.message)
+      navigate('/articles')
     } catch (error) {
       console.log(error)
     }
