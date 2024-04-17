@@ -15,7 +15,6 @@ export default function Articles(props) {
   }, [])
 
   return (
-    // ✨ fix the JSX: replace `Function.prototype` with actual functions
     <div className="articles">
       <h2>Articles</h2>
       {
@@ -31,7 +30,7 @@ export default function Articles(props) {
                 </div>
                 <div>
                   <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  <button disabled={true} onClick={() => deleteArticle(currentArticleId)}>Delete</button>
                 </div>
               </div>
             )
