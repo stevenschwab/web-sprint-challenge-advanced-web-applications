@@ -45,7 +45,7 @@ export default function App() {
         { username, password }
       )
       localStorage.setItem('token', data.token)
-      
+      setMessage(data.message)
     } catch (error) {
       console.log(error)
     }
