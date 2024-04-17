@@ -20,7 +20,7 @@ export default function App() {
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
   const redirectToLogin = () => { navigate('/') }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
     localStorage.removeItem('token')
