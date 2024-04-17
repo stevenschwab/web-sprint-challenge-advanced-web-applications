@@ -31,25 +31,16 @@ export default function App() {
   }
 
   const login = async ({ username, password }) => {
-    // ✨ implement
-    // We should flush the message state, turn on the spinner
-    // and launch a request to the proper endpoint.
-    // On success, we should set the token to local storage in a 'token' key,
-    // put the server success message in its proper state, and redirect
-    // to the Articles screen. Don't forget to turn off the spinner!
-    setMessage('')
-    setSpinnerOn(true)
+    setMessage('');
+    setSpinnerOn(true);
     try {
-      const { data } = await axios.post(
-        '/api/login',
-        { username, password }
-      )
-      localStorage.setItem('token', data.token)
-      setMessage(data.message)
-      navigate('/articles')
-      setSpinnerOn(false)
+      const { data } = await axios.post(loginUrl, { username, password });
+      localStorage.setItem('token', data.token);
+      setMessage(data.message);
+      navigate('/articles');
+      setSpinnerOn(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
