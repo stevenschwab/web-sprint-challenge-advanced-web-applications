@@ -33,7 +33,7 @@ export default function App() {
       const { data } = await axios.post(loginUrl, { username, password });
       localStorage.setItem('token', data.token);
       setMessage(data.message);
-      navigate('/articles');
+      redirectToArticles();
       setSpinnerOn(false);
     } catch (error) {
       console.log(error);
