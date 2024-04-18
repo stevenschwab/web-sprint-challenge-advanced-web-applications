@@ -40,18 +40,18 @@ export default function App() {
     }
   }
 
-  const getArticles = () => {
-    // ✨ implement
-    // We should flush the message state, turn on the spinner
-    // and launch an authenticated request to the proper endpoint.
-    // On success, we should set the articles in their proper state and
-    // put the server success message in its proper state.
-    // If something goes wrong, check the status of the response:
-    // if it's a 401 the token might have gone bad, and we should redirect to login.
-    // Don't forget to turn off the spinner!
+  const getArticles = async () => {
     setMessage('');
     setSpinnerOn(true);
-    
+    try {
+      const token = localStorage.getItem('token')
+      const response = await axios.get(articlesUrl, { headers: { Authorization: token }})
+      setArticles(response.data)
+      setSpinnerOn(false)
+      setMessage(response.data.message)
+    } catch (error) {
+      if (error?.response?.status == 401) logout();
+    }
   }
 
   const postArticle = article => {
@@ -87,7 +87,13 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles 
+                articles={articles} 
+                getArticles={getArticles} 
+                deleteArticle={deleteArticle} 
+                setCurrentArticleId={setCurrentArticleId} 
+                currentArticleId={currentArticleId}
+              />
             </>
           } />
         </Routes>
