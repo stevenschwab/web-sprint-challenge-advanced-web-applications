@@ -47,19 +47,22 @@ export default function App() {
       const token = localStorage.getItem('token')
       const response = await axios.get(articlesUrl, { headers: { Authorization: token }})
       setArticles(response.data.articles)
-      setSpinnerOn(false)
       setMessage(response.data.message)
+      setSpinnerOn(false)
     } catch (error) {
       if (error?.response?.status == 401) logout();
     }
   }
 
   const postArticle = article => {
+    setSpinnerOn(true)
     const token = localStorage.getItem('token');
     axios.post(articlesUrl, article, { headers: { Authorization: token } })
       .then(res => {
         setArticles(prev => [...prev, res.data.article])
         setMessage(res.data.message)
+        setCurrentArticleId(null)
+        setSpinnerOn(false)
       })
       .catch(err => {
         setMessage(err.response?.data?.message)
@@ -67,23 +70,31 @@ export default function App() {
   }
 
   const updateArticle = ({ article_id, article }) => {
+    setSpinnerOn(true)
     const token = localStorage.getItem('token');
     axios.put(`${articlesUrl}/${article_id}`, article, { headers: { Authorization: token } })
       .then(res => {
-        debugger
+        setArticles(prev => {
+          return prev.map(art => (art.article_id === article_id) ? res.data.article : art)
+        })
+        setMessage(res.data.message)
+        setCurrentArticleId(null)
+        setSpinnerOn(false)
       })
-      .catch(res => {
-        debugger
+      .catch(err => {
+        setMessage(err.response?.data?.message)
       })
   }
 
   const deleteArticle = article_id => {
+    setSpinnerOn(true)
     const token = localStorage.getItem('token');
     axios.delete(`${articlesUrl}/${article_id}`, { headers: { Authorization: token } })
       .then(res => {
         const updatedArticles = articles.filter(art => art.article_id !== article_id)
         setArticles(updatedArticles)
         setMessage(res.data.message)
+        setSpinnerOn(false)
       })
       .catch(err => {
         setMessage(err.message)
