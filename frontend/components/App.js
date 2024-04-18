@@ -35,8 +35,8 @@ export default function App() {
       setMessage(data.message);
       redirectToArticles();
       setSpinnerOn(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      setMessage(err?.message)
     }
   }
 
@@ -55,30 +55,41 @@ export default function App() {
   }
 
   const postArticle = article => {
-    // ✨ implement
-    // The flow is very similar to the `getArticles` function.
-    // You'll know what to do! Use log statements or breakpoints
-    // to inspect the response from the server.
-    axios.post(articlesUrl, article)
+    const token = localStorage.getItem('token');
+    axios.post(articlesUrl, "1", article, { headers: { Authorization: token } })
       .then(res => {
-        debugger
+        setMessage(res.data.message)
       })
       .catch(err => {
-        debugger
+        setMessage(err?.response?.data?.message)
       })
   }
 
   const updateArticle = ({ article_id, article }) => {
-    // ✨ implement
-    // You got this!
+    const token = localStorage.getItem('token');
+    axios.put(`${articlesUrl}/${article_id}`, article, { headers: { Authorization: token } })
+      .then(res => {
+        debugger
+      })
+      .catch(res => {
+        debugger
+      })
   }
 
   const deleteArticle = article_id => {
-    // ✨ implement
+    const token = localStorage.getItem('token');
+    axios.delete(`${articlesUrl}/${article_id}`, { headers: { Authorization: token } })
+      .then(res => {
+        const updatedArticles = articles.filter(art => art.article_id !== article_id)
+        setArticles(updatedArticles)
+        setMessage(res.data.message)
+      })
+      .catch(err => {
+        setMessage(err.message)
+      })
   }
 
   return (
-    // ✨ fix the JSX: `Spinner`
     <>
       <Spinner on={spinnerOn} />
       <Message message={message} />
@@ -97,7 +108,7 @@ export default function App() {
                 postArticle={postArticle}
                 updateArticle={updateArticle}
                 setCurrentArticleId={setCurrentArticleId}
-                currentArticle={{ currentArticleId }}
+                currentArticle={articles.find(art => art.article_id === currentArticleId)}
               />
               <Articles 
                 articles={articles} 
