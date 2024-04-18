@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useEffect, useState } from 'react'
 import PT from 'prop-types'
 
 const initialFormValues = { title: '', text: '', topic: '' }
 
-export default function ArticleForm(props) {
+const ArticleForm = forwardRef((props, ref) => {
   const [values, setValues] = useState(initialFormValues)
   const { postArticle, updateArticle, setCurrentArticleId, currentArticle } = props;
 
@@ -32,6 +32,12 @@ export default function ArticleForm(props) {
     const { title, text, topic } = values;
     return ((title.trim().length < 1) || (text.trim().length < 1) || (topic === ""))
   }
+
+  useImperativeHandle(ref, () => ({
+    resetForm: () => {
+      setValues(initialFormValues)
+    }
+  }))
 
   return (
     <form id="form" onSubmit={onSubmit}>
@@ -62,7 +68,9 @@ export default function ArticleForm(props) {
       </div>
     </form>
   )
-}
+})
+
+ArticleForm.displayName = 'ArticleForm';
 
 // 🔥 No touchy: ArticleForm expects the following props exactly:
 ArticleForm.propTypes = {
@@ -76,3 +84,5 @@ ArticleForm.propTypes = {
     topic: PT.string.isRequired,
   })
 }
+
+export default ArticleForm;

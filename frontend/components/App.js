@@ -65,6 +65,7 @@ export default function App() {
         setArticles(prev => [...prev, res.data.article])
         setMessage(res.data.message)
         setSpinnerOn(false)
+        formRef.current.resetForm()
       })
       .catch(err => {
         setMessage(err.response?.data?.message)
