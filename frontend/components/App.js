@@ -56,7 +56,7 @@ export default function App() {
 
   const postArticle = article => {
     const token = localStorage.getItem('token');
-    axios.post(articlesUrl, "1", article, { headers: { Authorization: token } })
+    axios.post(articlesUrl, article, { headers: { Authorization: token } })
       .then(res => {
         setMessage(res.data.message)
       })
