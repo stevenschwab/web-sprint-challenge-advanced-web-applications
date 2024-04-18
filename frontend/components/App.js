@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Articles from './Articles'
@@ -17,6 +17,7 @@ export default function App() {
   const [spinnerOn, setSpinnerOn] = useState(false)
 
   const navigate = useNavigate()
+  const formRef = useRef();
   const redirectToLogin = () => { navigate('/') }
   const redirectToArticles = () => { navigate('/articles') }
 
@@ -37,6 +38,7 @@ export default function App() {
       setSpinnerOn(false);
     } catch (err) {
       setMessage(err?.message)
+      setSpinnerOn(false)
     }
   }
 
@@ -51,6 +53,7 @@ export default function App() {
       setSpinnerOn(false)
     } catch (error) {
       if (error?.response?.status == 401) logout();
+      setSpinnerOn(false)
     }
   }
 
@@ -61,11 +64,11 @@ export default function App() {
       .then(res => {
         setArticles(prev => [...prev, res.data.article])
         setMessage(res.data.message)
-        setCurrentArticleId(null)
         setSpinnerOn(false)
       })
       .catch(err => {
         setMessage(err.response?.data?.message)
+        setSpinnerOn(false)
       })
   }
 
@@ -83,6 +86,7 @@ export default function App() {
       })
       .catch(err => {
         setMessage(err.response?.data?.message)
+        setSpinnerOn(false)
       })
   }
 
@@ -98,6 +102,7 @@ export default function App() {
       })
       .catch(err => {
         setMessage(err.message)
+        setSpinnerOn(false)
       })
   }
 
@@ -121,6 +126,7 @@ export default function App() {
                 updateArticle={updateArticle}
                 setCurrentArticleId={setCurrentArticleId}
                 currentArticle={articles.find(art => art.article_id === currentArticleId)}
+                ref={formRef}
               />
               <Articles 
                 articles={articles} 
