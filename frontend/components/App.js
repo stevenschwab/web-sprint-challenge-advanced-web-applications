@@ -71,7 +71,7 @@ export default function App() {
   }
 
   return (
-    // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
+    // ✨ fix the JSX: `Spinner`, `ArticleForm` and `Articles` expect props ❗
     <>
       <Spinner />
       <Message message={message} />
@@ -86,7 +86,12 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <ArticleForm />
+              <ArticleForm
+                postArticle={postArticle}
+                updateArticle={updateArticle}
+                setCurrentArticleId={setCurrentArticleId}
+                currentArticle={currentArticle}
+              />
               <Articles 
                 articles={articles} 
                 getArticles={getArticles} 
