@@ -46,7 +46,7 @@ export default function App() {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.get(articlesUrl, { headers: { Authorization: token }})
-      setArticles(response.data)
+      setArticles(response.data.articles)
       setSpinnerOn(false)
       setMessage(response.data.message)
     } catch (error) {
@@ -97,7 +97,7 @@ export default function App() {
                 postArticle={postArticle}
                 updateArticle={updateArticle}
                 setCurrentArticleId={setCurrentArticleId}
-                // currentArticle={currentArticle}
+                currentArticle={{ currentArticleId }}
               />
               <Articles 
                 articles={articles} 
