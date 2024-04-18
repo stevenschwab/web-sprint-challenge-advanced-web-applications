@@ -58,10 +58,11 @@ export default function App() {
     const token = localStorage.getItem('token');
     axios.post(articlesUrl, article, { headers: { Authorization: token } })
       .then(res => {
+        setArticles(prev => [...prev, res.data.article])
         setMessage(res.data.message)
       })
       .catch(err => {
-        setMessage(err?.response?.data?.message)
+        setMessage(err.response?.data?.message)
       })
   }
 
